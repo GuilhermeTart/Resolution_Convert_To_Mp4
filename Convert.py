@@ -1,5 +1,6 @@
 import subprocess
 import os
+import re #Serve para verificar expressões regulares
 from colors import colors
 
 print(f"""{colors.red}
@@ -34,6 +35,12 @@ def convert_to_mp4():
     if not path_movie or not resolution or not name_movie:
         print('Please provide the correct data')
         return
+    
+    
+    #Check if resolution is in correct format (e.g., '1280x720')
+    if not re.match(r'^\d+x\d+$', resolution):  #Padrão expressão regular,  ^ inicio  /d+ um ou + digitos X caractere literal  $ Especifica que o padrão deve terminar no final da string.
+        print("Invalid Resolution")
+        return
 
 
 
@@ -43,9 +50,7 @@ def convert_to_mp4():
     
  
 
-    if not resolution.isdigit() or int (resolution) <= 0:
-        print("Invalid Resolution")
-        return
+
     
     
     Command = f"ffmpeg -i {path_movie} -vf scale={resolution} {name_movie}"
@@ -53,3 +58,6 @@ def convert_to_mp4():
     subprocess.run(Command,shell=True)
     
 convert_to_mp4()
+
+
+
